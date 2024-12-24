@@ -7,9 +7,12 @@ export const useLogin = () => {
 	const navigate = useNavigate();
 	return useMutation({
 		mutationFn: async (userDetails) => {
-			const response = await axios.post("https://auth-backend-7w3u.onrender.com/login", userDetails).then((res) => res.data)
+			const response = await axios.post("https://auth-backend-7w3u.onrender.com/login", userDetails).then((res) => res.data
+            )
 
 			if (response.token) {
+				console.log(response);
+				
 				localStorage.setItem("token", response.token);
 				navigate("/")
                 PrivateRoute()

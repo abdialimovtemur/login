@@ -1,28 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import loginBg from "../../assets/login-bg.png";
 import pcBoy from "../../assets/pcBoy.png";
 import line from "../../assets/line.png";
+import { useNavigate } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
+import PrivateRoute from "../../PrivateRoute/PrivateRoutes";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("admin");
   const navigate = useNavigate();
   const { mutate, isLoading } = useLogin();
 
-  const formObj = {
+  const userDetails = {
     email,
     password,
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const userDetails = {
-      email,
-      password,
-    };
+  const handleSubmit = async () => {
+    console.log(userDetails);
     try {
-      await mutate(userDetails);
+      await mutate(userDetails); // Yaxshilangan: mutate funksiyasini kutamiz
+      // Login muvaffaqiyatli bo'lsa, masalan navigatsiya qilish mumkin:
+      navigate("/");
+      PrivateRoute()
+      // O'zgartiring agar kerak bo'lsa
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +41,7 @@ const Login = () => {
 
         <div className="p-10 m-auto w-6/12">
           <p className="font-bold pb-20 text-4xl">Welcome back to school,</p>
-          <form className="rounded-lg shadow-md w-full gap-3 flex flex-col">
+          <div className="rounded-lg shadow-md w-full gap-3 flex flex-col">
             {/* Email Input */}
             <div className="mb-4">
               <input
@@ -52,7 +54,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Password Input */}
             <div className="mb-4">
               <input
                 value={password}
@@ -62,18 +63,16 @@ const Login = () => {
                 className="w-full px-4 py-4 shadow-[0px_12px_6px_7px_rgba(0,0,0,0.3)] shadow-black bg-inherit placeholder-black font-bold border-2 border-black rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 placeholder="Enter your password"
               />
-              <p className="pt-6">Don't have account sign up, here</p>
+              <p className="pt-6">Don't have account? Sign up here</p>
             </div>
 
-            {/* Submit Button */}
             <button
-              onClick={() => hundle}
-              type="submit"
-              className="w-full shadow-[0px_12px_6px_7px_rgba(0,0,0,0.3)] shadow-black bg-inherit font-bold border-2 border-black py-3 px-4 rounded-lg hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              onClick={handleSubmit}
+              className="w-full shadow-[0px_12px_6px_7px_rgba(0,0,0,0.3)] shadow-black bg-inherit font-bold border-2 border-black py-3 px-4 rounded-lg  focus:bg-gray-500 focus:ring-2 focus:ring-blue-400"
             >
               Login
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
